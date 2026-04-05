@@ -5,13 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StatementDto {
-    private String accountNumber;
-    private List<TransactionDto> transactions;
+public class DepositWithdrawDto {
+    private Long amount;
 }
