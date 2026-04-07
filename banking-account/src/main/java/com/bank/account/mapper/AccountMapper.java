@@ -14,6 +14,8 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface AccountMapper {
 
+    @Mapping(target = "date", source = "transactionDate")
+    @Mapping(target = "balance", source = "balanceAfter")
     TransactionDto toTransactionDto(Transaction transaction);
 
     AccountDto toAccountDto(Account account);

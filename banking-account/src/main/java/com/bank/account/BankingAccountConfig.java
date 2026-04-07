@@ -6,9 +6,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
-@ComponentScan(basePackages = {"com.banking.account"})
-@EntityScan(basePackages = {"com.banking.account.entities"})
-@EnableJpaRepositories(basePackages = {"com.banking.account.repositories"})
+@ComponentScan(basePackages = {"com.bank.account"})
+@EntityScan(basePackages = {"com.bank.account.entities"})
+@EnableJpaRepositories(basePackages = {"com.bank.account.repositories"})
 public class BankingAccountConfig {
     
 }

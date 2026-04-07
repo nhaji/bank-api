@@ -27,6 +27,7 @@ public class Account {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Builder.Default
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("transactionDate ASC")
     private List<Transaction> transactions = new ArrayList<>();
