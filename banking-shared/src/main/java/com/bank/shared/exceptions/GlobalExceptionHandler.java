@@ -2,7 +2,7 @@ package com.bank.shared.exceptions;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -19,29 +19,31 @@ public class GlobalExceptionHandler {
     public static final String INTERNAL_SERVER_ERROR_MSG_PREFIX = "Internal server error: ";
 
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<ResponseDTO<Void>> handleBusiness(BusinessException exception, HttpServletRequest request) {
-        return buildErrorResponse(exception, HttpStatus.BAD_REQUEST, request);
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseDTO<Void> handleBusiness(BusinessException exception, HttpServletRequest request) {
+        return buildErrorResponse(exception, request);
     }
 
     @ExceptionHandler(TechnicalException.class)
-    public ResponseEntity<ResponseDTO<Void>> handleTechnical(TechnicalException exception, HttpServletRequest request) {
-        return buildErrorResponse(exception, HttpStatus.INTERNAL_SERVER_ERROR, request);
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseDTO<Void> handleTechnical(TechnicalException exception, HttpServletRequest request) {
+        return buildErrorResponse(exception, request);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ResponseDTO<Void>> handleGeneric(Exception exception, HttpServletRequest request) {
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseDTO<Void> handleGeneric(Exception exception, HttpServletRequest request) {
         return buildErrorResponse(new TechnicalException(INTERNAL_SERVER_ERROR_CODE, INTERNAL_SERVER_ERROR_MSG_PREFIX + exception.getMessage()),
-                HttpStatus.INTERNAL_SERVER_ERROR, request);
+                request);
     }
 
-    private ResponseEntity<ResponseDTO<Void>> buildErrorResponse(BaseException exception, HttpStatus status, HttpServletRequest request) {
+    private ResponseDTO<Void> buildErrorResponse(BaseException exception, HttpServletRequest request) {
         String requestId = (String) request.getAttribute(RequestInterceptor.REQUEST_ID_HEADER);
         LocalDateTime timestamp = (LocalDateTime) request.getAttribute(RequestInterceptor.REQUEST_TIME_HEADER);
-        ResponseDTO<Void> response = ResponseDTO.<Void>builder()
+        return ResponseDTO.<Void>builder()
                 .requestId(requestId)
                 .timestamp(timestamp != null ? timestamp : LocalDateTime.now())
                 .error(new ErrorDTO(exception.getCode(), exception.getMessage()))
                 .build();
-        return new ResponseEntity<>(response, status);
     }
 }

@@ -1,31 +1,44 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-This repository is a Java 21 multi-module Maven project. The root [`pom.xml`](/home/hespway/Workspace/Projects/Java/banking-kata-api/pom.xml) aggregates three modules:
+This is a Java 21 multi-module Maven project. The root `pom.xml` aggregates:
+- `banking-shared`: cross-cutting Spring infrastructure only (`security`, `exceptions`, `interceptors`, shared DTOs).
+- `banking-account`: account feature module using `api`, `application`, `domain`, `infrastructure`.
+- `banking-user`: feature-first module with `auth`, `management`, and `shared` packages.
+- `banking-app`: thin assembly module with the Spring Boot entrypoint and full integration tests.
 
-- `banking-app`: Spring Boot entrypoint and runtime config in `src/main/resources/`.
-- `banking-account`: account, user, controller, service, repository, and DTO logic.
-- `banking-shared`: shared security, exception, interceptor, and response infrastructure.
-
-Production code lives under `src/main/java`. Tests currently live under `banking-account/test/java`, so keep new tests consistent with the existing layout unless the test structure is refactored across the module.
+Keep module boundaries explicit. Feature modules may depend on a provider-owned facade from another module, but never on another module’s repositories or entities directly.
 
 ## Build, Test, and Development Commands
 - `mvn clean test`: runs the full Maven test suite from the repository root.
-- `mvn clean package`: builds all modules and produces the Spring Boot artifact.
+- `mvn clean package`: builds all modules and produces the Boot artifact.
 - `mvn -pl banking-app spring-boot:run`: starts the API locally.
+- `mvn -pl banking-app -am test`: runs the app module with required reactor dependencies.
 - `docker compose up -d`: starts the local PostgreSQL dependency defined in [`docker-compose.yml`](/home/hespway/Workspace/Projects/Java/banking-kata-api/docker-compose.yml).
 
-Local runtime uses PostgreSQL on `localhost:5432/bankdb`; tests use the H2-backed `test` profile from [`application-test.yml`](/home/hespway/Workspace/Projects/Java/banking-kata-api/banking-app/src/main/resources/application-test.yml).
+Local runtime uses PostgreSQL. Tests use H2 with the `test` profile in each module.
 
 ## Coding Style & Naming Conventions
-Use 4-space indentation and standard Java naming: `PascalCase` for classes, `camelCase` for methods/fields, and lowercase package names under `com.bank...`. Keep controllers, services, repositories, DTOs, and entities in their existing dedicated packages. Prefer clear, single-purpose service methods and align DTO names with endpoint behavior, for example `LoginRequest` or `StatementDto`.
+Use 4-space indentation and standard Java naming: `PascalCase` for types, `camelCase` for members, lowercase packages under `com.bank...`.
 
-This project uses Lombok and MapStruct. No formatter or linter is configured in Maven, so keep imports clean and follow existing Spring Boot conventions.
+Prefer feature-first packaging. Example:
+- `com.bank.user.auth.api`
+- `com.bank.user.management.application`
+- `com.bank.user.shared.domain`
+
+Controllers are concrete classes in `api`. Business logic lives in `application`. JPA entities belong in `domain` or feature-local/shared domain. Repositories, mappers, and security adapters belong in `infrastructure`.
+
+All final API responses must be wrapped in `ResponseDTO`. Successful responses are wrapped by `ResponseWrapperAdvice`; errors must be produced through `GlobalExceptionHandler`, with `error` filled and `data` omitted.
 
 ## Testing Guidelines
-Tests use JUnit 5, Spring Boot Test, MockMvc, AssertJ, and the `test` Spring profile. Name test classes with the `*Test` suffix and use descriptive method names such as `shouldCreateAdditionalAccountForUser`. Favor API-level tests that extend the existing `BaseApiTest` when validating controller behavior, authentication, and transactional flows.
+Use JUnit 5, Spring Boot Test, MockMvc, AssertJ, and the `test` profile. Name test classes `*Test` and use descriptive methods such as `shouldRegisterNewUserAndProvisionInitialAccount`.
+
+Testing strategy:
+- Module API tests stay inside each feature module and should isolate cross-module calls with mocks or Spring Security test helpers.
+- App-level integration tests live in `banking-app` and must use the assembled context with H2 and no mocks.
+- Do not put all tests in `banking-app`; reserve it for real end-to-end verification.
 
 ## Commit & Pull Request Guidelines
 Recent history uses short imperative subjects such as `Add docker config && auth api` and `Initialize account interfaces definitions`. Keep commits focused, use present-tense verbs (`Add`, `Refactor`, `Fix`), and avoid leaving `WIP` commits in shared branches.
 
-Pull requests should explain the functional change, note any config or schema impact, and list the verification performed (`mvn clean test`, manual API checks, or Docker startup). Include example requests or responses when API behavior changes.
+Pull requests should explain the functional change, note config or schema impact, and list verification performed (`mvn clean test`, `mvn -pl banking-app -am test`, local startup). Include example requests/responses when API contracts change.

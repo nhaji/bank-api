@@ -18,6 +18,7 @@
     <modules>
         <module>banking-shared</module>
         <module>banking-account</module>
+        <module>banking-user</module>
         <module>banking-app</module>
     </modules>
 
@@ -39,6 +40,11 @@
             <dependency>
                 <groupId>com.bank</groupId>
                 <artifactId>banking-account</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.bank</groupId>
+                <artifactId>banking-user</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
