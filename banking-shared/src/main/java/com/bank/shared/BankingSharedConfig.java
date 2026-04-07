@@ -5,6 +5,4 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan(basePackages = {"com.bank.shared"})
-public class BankingSharedConfig {
-    
-}
+public class BankingSharedConfig {}

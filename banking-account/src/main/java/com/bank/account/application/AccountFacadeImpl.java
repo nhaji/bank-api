@@ -1,17 +1,16 @@
 package com.bank.account.application;
 
-import org.springframework.stereotype.Service;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class AccountFacadeImpl implements AccountFacade {
 
-    private final AccountServiceImpl accountService;
+  private final AccountServiceImpl accountService;
 
-    @Override
-    public void createInitialAccount(String ownerEmail) {
-        accountService.createAccountForOwner(ownerEmail);
-    }
+  @Override
+  public void createInitialAccount(String ownerEmail) {
+    accountService.createAccountForOwner(ownerEmail);
+  }
 }

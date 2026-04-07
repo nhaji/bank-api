@@ -6,6 +6,7 @@ import com.bank.user.auth.api.RegisterRequest;
 import com.bank.user.auth.api.RegisterResponse;
 
 public interface AuthService {
-    RegisterResponse register(RegisterRequest request);
-    LoginResponse login(LoginRequest request);
+  RegisterResponse register(RegisterRequest request);
+
+  LoginResponse login(LoginRequest request);
 }

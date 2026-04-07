@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+set -eu
+
+echo "Running Spotless formatter..."
+mvn -q spotless:apply
+
+echo "Restaging formatted files..."
+git add -A

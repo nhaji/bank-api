@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AccountDto {
-    private Long id;
-    private String accountNumber;
+  private Long id;
+  private String accountNumber;
 }

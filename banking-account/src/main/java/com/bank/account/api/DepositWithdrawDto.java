@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DepositWithdrawDto {
-    private Long amount;
+  private Long amount;
 }

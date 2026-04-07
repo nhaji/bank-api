@@ -9,5 +9,4 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @ComponentScan(basePackages = {"com.bank.user"})
 @EntityScan(basePackages = {"com.bank.user"})
 @EnableJpaRepositories(basePackages = {"com.bank.user"})
-public class BankingUserConfig {
-}
+public class BankingUserConfig {}

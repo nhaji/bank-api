@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ErrorDTO {
-    private String code;
-    private String message;
+  private String code;
+  private String message;
 }

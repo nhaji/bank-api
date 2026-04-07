@@ -1,0 +1,16 @@
+com/bank/user/support/BaseApiTest.class
+com/bank/user/management/UserManagementControllerTest$ListUsersTests.class
+com/bank/user/management/UserManagementControllerTest$ListUsersTests$1.class
+com/bank/user/auth/AuthControllerTest.class
+com/bank/user/auth/AuthControllerTest$LoginTests.class
+com/bank/user/auth/AuthControllerTest$RegisterTests$1.class
+com/bank/user/management/UserManagementControllerTest$DeleteUserTests$1.class
+com/bank/user/management/UserManagementControllerTest$UpdateUserTests$1.class
+com/bank/user/auth/AuthControllerTest$RegisterTests.class
+com/bank/user/management/UserManagementControllerTest$DeleteUserTests$2.class
+com/bank/user/management/UserManagementControllerTest$1.class
+com/bank/user/management/UserManagementControllerTest$DeleteUserTests.class
+com/bank/user/management/UserManagementControllerTest.class
+com/bank/user/auth/AuthControllerTest$LoginTests$1.class
+com/bank/user/support/UserModuleTestApplication.class
+com/bank/user/management/UserManagementControllerTest$UpdateUserTests.class

@@ -3,20 +3,22 @@ package com.bank.shared.security;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-    public static final String UNAUTHORIZED_MSG = "Unauthorized";
+  public static final String UNAUTHORIZED_MSG = "Unauthorized";
 
-    @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response,
-                         AuthenticationException authException) throws IOException, ServletException {
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, UNAUTHORIZED_MSG);
-    }
+  @Override
+  public void commence(
+      HttpServletRequest request,
+      HttpServletResponse response,
+      AuthenticationException authException)
+      throws IOException, ServletException {
+    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, UNAUTHORIZED_MSG);
+  }
 }
