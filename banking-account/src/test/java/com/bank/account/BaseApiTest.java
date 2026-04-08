@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,10 +21,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public abstract class BaseApiTest {
 
-  protected static final String PRIMARY_USER = "john@example.com";
-  protected static final String SECONDARY_USER = "user1@example.com";
+  protected static final String PRIMARY_USER = "user1@example.com";
+  protected static final String SECONDARY_USER = "user2@example.com";
 
-  @Autowired protected org.springframework.test.web.servlet.MockMvc mockMvc;
+  @Autowired protected MockMvc mockMvc;
 
   @Autowired protected ObjectMapper objectMapper;
 
