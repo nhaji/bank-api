@@ -1,2 +1,6 @@
 .idea/
-.vscode/*.code-workspace
+.vscode/
+target/
+**/target/
+*.class
+node_modules/
