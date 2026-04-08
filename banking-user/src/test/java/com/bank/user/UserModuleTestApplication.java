@@ -1,7 +1,6 @@
-package com.bank.user.support;
+package com.bank.user;
 
 import com.bank.shared.BankingSharedConfig;
-import com.bank.user.BankingUserConfig;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 

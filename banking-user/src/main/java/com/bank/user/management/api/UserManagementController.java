@@ -1,6 +1,7 @@
 package com.bank.user.management.api;
 
 import com.bank.user.management.application.UserManagementService;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class UserManagementController {
   @PutMapping("/{userId}")
   @ResponseStatus(HttpStatus.OK)
   public UserResponse updateUser(
-      @PathVariable Long userId, @RequestBody UpdateUserRequest request) {
+      @PathVariable Long userId, @Valid @RequestBody UpdateUserRequest request) {
     return userManagementService.updateUser(userId, request);
   }
 

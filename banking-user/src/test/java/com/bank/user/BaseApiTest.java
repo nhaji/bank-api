@@ -1,4 +1,4 @@
-package com.bank.user.support;
+package com.bank.user;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 

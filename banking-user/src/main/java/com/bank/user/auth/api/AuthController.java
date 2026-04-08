@@ -1,6 +1,7 @@
 package com.bank.user.auth.api;
 
 import com.bank.user.auth.application.AuthService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,13 +19,13 @@ public class AuthController {
 
   @PostMapping("/register")
   @ResponseStatus(HttpStatus.CREATED)
-  public RegisterResponse register(@RequestBody RegisterRequest request) {
+  public RegisterResponse register(@Valid @RequestBody RegisterRequest request) {
     return authService.register(request);
   }
 
   @PostMapping("/login")
   @ResponseStatus(HttpStatus.OK)
-  public LoginResponse login(@RequestBody LoginRequest request) {
+  public LoginResponse login(@Valid @RequestBody LoginRequest request) {
     return authService.login(request);
   }
 }

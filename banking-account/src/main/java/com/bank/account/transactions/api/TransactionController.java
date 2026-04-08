@@ -1,6 +1,7 @@
 package com.bank.account.transactions.api;
 
 import com.bank.account.transactions.application.AccountTransactionsService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,13 +21,15 @@ public class TransactionController {
 
   @PostMapping("/deposit")
   @ResponseStatus(HttpStatus.OK)
-  public void deposit(@PathVariable Long accountId, @RequestBody DepositWithdrawDto request) {
+  public void deposit(
+      @PathVariable Long accountId, @Valid @RequestBody DepositWithdrawDto request) {
     accountTransactionsService.deposit(accountId, request.getAmount());
   }
 
   @PostMapping("/withdraw")
   @ResponseStatus(HttpStatus.OK)
-  public void withdraw(@PathVariable Long accountId, @RequestBody DepositWithdrawDto request) {
+  public void withdraw(
+      @PathVariable Long accountId, @Valid @RequestBody DepositWithdrawDto request) {
     accountTransactionsService.withdraw(accountId, request.getAmount());
   }
 

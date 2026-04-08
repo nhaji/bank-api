@@ -2,11 +2,11 @@ package com.bank.account.transactions.application;
 
 import com.bank.account.management.domain.Account;
 import com.bank.account.management.domain.AccountBusinessException;
-import com.bank.account.management.infrastructure.AccountMapper;
 import com.bank.account.management.infrastructure.AccountRepository;
 import com.bank.account.transactions.api.StatementDto;
 import com.bank.account.transactions.domain.Transaction;
 import com.bank.account.transactions.domain.Transaction.TransactionType;
+import com.bank.account.transactions.infrastructure.TransactionMapper;
 import com.bank.account.transactions.infrastructure.TransactionRepository;
 import com.bank.shared.exceptions.BusinessException;
 import java.time.LocalDateTime;
@@ -22,7 +22,7 @@ public class AccountTransactionsServiceImpl implements AccountTransactionsServic
 
   private final AccountRepository accountRepository;
   private final TransactionRepository transactionRepository;
-  private final AccountMapper accountMapper;
+  private final TransactionMapper transactionMapper;
 
   @Override
   @Transactional
@@ -59,7 +59,7 @@ public class AccountTransactionsServiceImpl implements AccountTransactionsServic
   @Transactional(readOnly = true)
   public StatementDto getStatement(Long accountId) {
     Account account = getAccountForCurrentUser(accountId);
-    return accountMapper.toStatementDto(account);
+    return transactionMapper.toStatementDto(account);
   }
 
   private Account getAccountForCurrentUser(Long accountId) {

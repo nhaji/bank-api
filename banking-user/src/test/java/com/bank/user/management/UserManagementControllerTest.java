@@ -8,11 +8,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.bank.shared.dtos.ResponseDTO;
+import com.bank.user.BaseApiTest;
 import com.bank.user.auth.api.RegisterRequest;
 import com.bank.user.management.api.UpdateUserRequest;
 import com.bank.user.management.api.UserResponse;
 import com.bank.user.shared.domain.UserBusinessException;
-import com.bank.user.support.BaseApiTest;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
