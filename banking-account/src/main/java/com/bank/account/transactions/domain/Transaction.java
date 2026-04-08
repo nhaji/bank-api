@@ -1,5 +1,6 @@
-package com.bank.account.domain;
+package com.bank.account.transactions.domain;
 
+import com.bank.account.management.domain.Account;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

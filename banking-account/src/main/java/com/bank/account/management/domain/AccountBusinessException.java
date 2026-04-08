@@ -1,4 +1,4 @@
-package com.bank.account.domain;
+package com.bank.account.management.domain;
 
 public final class AccountBusinessException {
 

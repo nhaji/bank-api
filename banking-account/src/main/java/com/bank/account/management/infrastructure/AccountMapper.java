@@ -1,10 +1,10 @@
-package com.bank.account.infrastructure;
+package com.bank.account.management.infrastructure;
 
-import com.bank.account.api.AccountDto;
-import com.bank.account.api.StatementDto;
-import com.bank.account.api.TransactionDto;
-import com.bank.account.domain.Account;
-import com.bank.account.domain.Transaction;
+import com.bank.account.management.api.AccountDto;
+import com.bank.account.management.domain.Account;
+import com.bank.account.transactions.api.StatementDto;
+import com.bank.account.transactions.api.TransactionDto;
+import com.bank.account.transactions.domain.Transaction;
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

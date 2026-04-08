@@ -6,11 +6,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.bank.account.BaseApiTest;
-import com.bank.account.api.AccountDto;
-import com.bank.account.api.DepositWithdrawDto;
-import com.bank.account.api.StatementDto;
-import com.bank.account.api.TransactionDto;
-import com.bank.account.domain.AccountBusinessException;
+import com.bank.account.management.api.AccountDto;
+import com.bank.account.management.domain.AccountBusinessException;
+import com.bank.account.transactions.api.DepositWithdrawDto;
+import com.bank.account.transactions.api.StatementDto;
+import com.bank.account.transactions.api.TransactionDto;
 import com.bank.shared.dtos.ResponseDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.util.List;

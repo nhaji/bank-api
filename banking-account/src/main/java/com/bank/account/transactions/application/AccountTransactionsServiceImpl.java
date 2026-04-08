@@ -1,18 +1,15 @@
-package com.bank.account.application;
+package com.bank.account.transactions.application;
 
-import com.bank.account.api.AccountDto;
-import com.bank.account.api.StatementDto;
-import com.bank.account.domain.Account;
-import com.bank.account.domain.AccountBusinessException;
-import com.bank.account.domain.Transaction;
-import com.bank.account.domain.Transaction.TransactionType;
-import com.bank.account.infrastructure.AccountMapper;
-import com.bank.account.infrastructure.AccountRepository;
-import com.bank.account.infrastructure.TransactionRepository;
+import com.bank.account.management.domain.Account;
+import com.bank.account.management.domain.AccountBusinessException;
+import com.bank.account.management.infrastructure.AccountMapper;
+import com.bank.account.management.infrastructure.AccountRepository;
+import com.bank.account.transactions.api.StatementDto;
+import com.bank.account.transactions.domain.Transaction;
+import com.bank.account.transactions.domain.Transaction.TransactionType;
+import com.bank.account.transactions.infrastructure.TransactionRepository;
 import com.bank.shared.exceptions.BusinessException;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class AccountServiceImpl implements AccountService {
+public class AccountTransactionsServiceImpl implements AccountTransactionsService {
 
   private final AccountRepository accountRepository;
   private final TransactionRepository transactionRepository;
@@ -29,65 +26,43 @@ public class AccountServiceImpl implements AccountService {
 
   @Override
   @Transactional
-  public AccountDto createAccountForCurrentUser() {
-    Account account = createNewAccount(getCurrentUserEmail());
-    createInitialTransaction(account);
-    return accountMapper.toAccountDto(account);
-  }
-
-  @Transactional
-  public AccountDto createAccountForOwner(String ownerEmail) {
-    Account account = createNewAccount(ownerEmail);
-    createInitialTransaction(account);
-    return accountMapper.toAccountDto(account);
-  }
-
-  @Override
-  @Transactional
   public void deposit(Long accountId, Long amount) {
-    if (amount <= 0) {
+    if (amount == null || amount <= 0) {
       throw new BusinessException(
           AccountBusinessException.NEGATIVE_AMOUNT_DEPOSIT_CODE,
           AccountBusinessException.NEGATIVE_AMOUNT_DEPOSIT_MSG);
     }
-    Account account = getAccountAndVerifyOwnership(accountId, getCurrentUserEmail());
-    Long newBalance = getCurrentBalance(account) + amount;
+    Account account = getAccountForCurrentUser(accountId);
+    Long newBalance = currentBalance(account) + amount;
     createTransaction(account, amount, TransactionType.DEPOSIT, newBalance);
   }
 
   @Override
   @Transactional
   public void withdraw(Long accountId, Long amount) {
-    if (amount <= 0) {
+    if (amount == null || amount <= 0) {
       throw new BusinessException(
           AccountBusinessException.NEGATIVE_AMOUNT_WITHDRAW_CODE,
           AccountBusinessException.NEGATIVE_AMOUNT_WITHDRAW_MSG);
     }
-    Account account = getAccountAndVerifyOwnership(accountId, getCurrentUserEmail());
-    Long currentBalance = getCurrentBalance(account);
-    if (currentBalance < amount) {
+    Account account = getAccountForCurrentUser(accountId);
+    Long balance = currentBalance(account);
+    if (balance < amount) {
       throw new BusinessException(
           AccountBusinessException.INSUFFICIENT_BALANCE_CODE,
           AccountBusinessException.INSUFFICIENT_BALANCE_MSG);
     }
-    createTransaction(account, -amount, TransactionType.WITHDRAW, currentBalance - amount);
+    createTransaction(account, -amount, TransactionType.WITHDRAW, balance - amount);
   }
 
   @Override
   @Transactional(readOnly = true)
   public StatementDto getStatement(Long accountId) {
-    Account account = getAccountAndVerifyOwnership(accountId, getCurrentUserEmail());
+    Account account = getAccountForCurrentUser(accountId);
     return accountMapper.toStatementDto(account);
   }
 
-  @Override
-  @Transactional(readOnly = true)
-  public List<AccountDto> getCurrentUserAccounts() {
-    return accountMapper.toAccountDtoList(
-        accountRepository.findByOwnerEmailOrderByIdAsc(getCurrentUserEmail()));
-  }
-
-  private Account getAccountAndVerifyOwnership(Long accountId, String ownerEmail) {
+  private Account getAccountForCurrentUser(Long accountId) {
     Account account =
         accountRepository
             .findById(accountId)
@@ -96,6 +71,7 @@ public class AccountServiceImpl implements AccountService {
                     new BusinessException(
                         AccountBusinessException.ACCOUNT_NOT_FOUND_CODE,
                         AccountBusinessException.ACCOUNT_NOT_FOUND_MSG));
+    String ownerEmail = getCurrentUserEmail();
     if (!account.getOwnerEmail().equals(ownerEmail)) {
       throw new BusinessException(
           AccountBusinessException.ACCOUNT_ACCES_UNAUTHORIZED_CODE,
@@ -104,17 +80,7 @@ public class AccountServiceImpl implements AccountService {
     return account;
   }
 
-  private Account createNewAccount(String ownerEmail) {
-    Account account =
-        Account.builder().accountNumber(generateAccountNumber()).ownerEmail(ownerEmail).build();
-    return accountRepository.save(account);
-  }
-
-  private void createInitialTransaction(Account account) {
-    createTransaction(account, 0L, TransactionType.INITIAL, 0L);
-  }
-
-  private Long getCurrentBalance(Account account) {
+  private Long currentBalance(Account account) {
     return account.getTransactions().stream()
         .map(Transaction::getBalanceAfter)
         .reduce((first, second) -> second)
@@ -136,12 +102,13 @@ public class AccountServiceImpl implements AccountService {
     accountRepository.save(account);
   }
 
-  private String generateAccountNumber() {
-    return ACCOUNT_PREFIX + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
-  }
-
   private String getCurrentUserEmail() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication == null) {
+      throw new BusinessException(
+          AccountBusinessException.ACCOUNT_ACCES_UNAUTHORIZED_CODE,
+          AccountBusinessException.ACCOUNT_ACCES_UNAUTHORIZED_MSG);
+    }
     return authentication.getName();
   }
 }

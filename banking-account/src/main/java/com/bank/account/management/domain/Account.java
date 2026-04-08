@@ -1,5 +1,6 @@
-package com.bank.account.domain;
+package com.bank.account.management.domain;
 
+import com.bank.account.transactions.domain.Transaction;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,6 +1,6 @@
 package com.bank.user.auth.application;
 
-import com.bank.account.application.AccountFacade;
+import com.bank.account.AccountFacade;
 import com.bank.shared.exceptions.BusinessException;
 import com.bank.shared.security.JwtTokenProvider;
 import com.bank.user.auth.api.LoginRequest;

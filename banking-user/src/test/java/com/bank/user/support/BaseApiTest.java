@@ -2,15 +2,15 @@ package com.bank.user.support;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 
-import com.bank.account.application.AccountFacade;
+import com.bank.account.AccountFacade;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
@@ -26,7 +26,7 @@ public abstract class BaseApiTest {
 
   @Autowired protected ObjectMapper objectMapper;
 
-  @MockBean protected AccountFacade accountFacade;
+  @MockitoBean protected AccountFacade accountFacade;
 
   @Value("${test.user.email}")
   protected String testEmail;

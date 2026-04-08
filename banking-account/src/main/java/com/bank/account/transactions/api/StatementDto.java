@@ -1,4 +1,4 @@
-package com.bank.account.api;
+package com.bank.account.transactions.api;
 
 import java.util.List;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,5 @@
-package com.bank.account.api;
+package com.bank.account.transactions.api;
 
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,8 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TransactionDto {
-  private LocalDateTime date;
+public class DepositWithdrawDto {
   private Long amount;
-  private Long balance;
 }

@@ -6,7 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.bank.account.BaseApiTest;
-import com.bank.account.api.AccountDto;
+import com.bank.account.management.api.AccountDto;
 import com.bank.shared.dtos.ResponseDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.util.List;
