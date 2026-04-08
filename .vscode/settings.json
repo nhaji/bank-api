@@ -1,11 +1,7 @@
 {
+  // Use google-java-format (same tool Spotless uses) on save
   "editor.formatOnSave": true,
-  "files.insertFinalNewline": true,
-  "files.trimTrailingWhitespace": true,
-  "[java]": {
-    "editor.defaultFormatter": "redhat.java"
-  },
-  "[markdown]": {
-    "files.trimTrailingWhitespace": false
-  }
+  "java.format.enabled": false,
+  "google-java-format.enabled": true,
+  "google-java-format.version": "1.24.0"
 }
