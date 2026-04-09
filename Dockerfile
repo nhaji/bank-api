@@ -1,10 +1,16 @@
-FROM openjdk:21-jdk-slim as build
-WORKDIR /app
+# Build stage
+FROM maven:3.9.6-eclipse-temurin-21 AS build
+WORKDIR /workspace
 COPY . .
-RUN ./mvnw clean package -DskipTests
+RUN mvn -pl banking-app -am clean verify
 
-FROM openjdk:21-jdk-slim
+# Runtime stage
+FROM eclipse-temurin:21-jre
 WORKDIR /app
-COPY --from=build /app/banking-app/target/banking-app-1.0.0.jar app.jar
+# Create unprivileged user and group
+RUN addgroup --system app && adduser --system --ingroup app app
+COPY --from=build /workspace/banking-app/target/banking-app-1.0.0.jar /app/app.jar
+USER app
+ENV SERVER_PORT=8080
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
